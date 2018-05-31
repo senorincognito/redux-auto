@@ -260,7 +260,7 @@ function buildActionLayout(fileNameArray){
 
         if(actionPreProcessor){
           if(1 < actionPreProcessor.length){
-            return { type: ACTIONID, payload:actionPreProcessor(payload,getState()[reducerName])}
+            return { type: ACTIONID, payload:actionPreProcessor(payload,getState()[reducerName],getState)}
           } // else
           return { type: ACTIONID, payload:actionPreProcessor(payload) }
         } // else
