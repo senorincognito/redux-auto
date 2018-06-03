@@ -226,7 +226,7 @@ function auto(modules, fileNameArray) {
 
         var newState = data;
         var newAsyncVal = false;
-        var async = data ? data.__proto__.async : {};
+        var asyncData = data ? data.__proto__.asyncData : {};
 
         if (avabileAction in avabileActions) {
 
@@ -235,10 +235,10 @@ function auto(modules, fileNameArray) {
             newAsyncVal = true;
             var stage = actionFragments[1].toLowerCase();
 
-            async = Object.assign({}, async);
+            asyncData = Object.assign({}, asyncData);
 
             if ("clear" === stage) {
-              async[avabileAction] = undefined;
+              asyncData[avabileAction] = undefined;
             } else {
 
               var clearFn = void 0;
@@ -262,10 +262,10 @@ function auto(modules, fileNameArray) {
                 chaining.set(lookup[reducerName][avabileAction].chain, action.type, _argsArray);
               } // END else
 
-              async[avabileAction] = stage === "pending" ? true : stage === "fulfilled" ? false : payload;
+              asyncData[avabileAction] = stage === "pending" ? true : stage === "fulfilled" ? false : payload;
 
               if (clearFn) //(async[avabileAction] instanceof Error){
-                async[avabileAction].clear = clearFn;
+                asyncData[avabileAction].clear = clearFn;
             } // END else "clear" !== stage
           } else {
             var _lookup$reducerName2;
@@ -286,13 +286,13 @@ function auto(modules, fileNameArray) {
         //console.log (action.type, newState, ({}).__proto__ === newState.__proto__)
 
 
-        if (newAsyncVal || newState && isAsync[reducerName] && !newState.__proto__.async) {
+        if (newAsyncVal || newState && isAsync[reducerName] && !newState.__proto__.asyncData) {
 
           if (isObject(newState)) {
 
             var _newProto_ = {};
-            Object.defineProperty(_newProto_, "async", { enumerable: false, writable: false, value: async });
-            Object.defineProperty(_newProto_, "loading", { enumerable: false, writable: false, value: async });
+            Object.defineProperty(_newProto_, "async", { enumerable: false, writable: false, value: asyncData });
+            Object.defineProperty(_newProto_, "loading", { enumerable: false, writable: false, value: asyncData });
 
             //const newStateWithAsync = Object.create(Object.assign(Object.create(newState.__proto__),{async}));
             var newStateWithAsync = Object.create(_newProto_);
@@ -301,8 +301,8 @@ function auto(modules, fileNameArray) {
             // I am a redux-auto proto
             var _newProto_2 = Object.create(Array.prototype);
 
-            Object.defineProperty(_newProto_2, "async", { enumerable: false, writable: false, value: async });
-            Object.defineProperty(_newProto_2, "loading", { enumerable: false, writable: false, value: async });
+            Object.defineProperty(_newProto_2, "async", { enumerable: false, writable: false, value: asyncData });
+            Object.defineProperty(_newProto_2, "loading", { enumerable: false, writable: false, value: asyncData });
 
             newState = newState.slice(0); // clone array
 
